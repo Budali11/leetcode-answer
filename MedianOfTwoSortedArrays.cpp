@@ -46,13 +46,23 @@ public:
         }
       }
       else {
-        if (pnums1 == nums1.end()) {
-          S.push(*pnums2);
-          pnums2++;
+        // here no need to push elements to S, 
+        // because it is already a whole sorted array now
+        int med_index = length/2 - S.size();
+        if ((length & 0x1) == 1) { // odd
+          return (pnums1 == nums1.end())? pnums2[med_index]: pnums1[med_index];
         }
-        else {
-          S.push(*pnums1);
-          pnums1++;
+        else { // even
+          double ret;
+          vector<int>::iterator no_empty = (pnums1 == nums1.end())? pnums2: pnums1;
+          if (med_index == 0) {
+            ret = ((double)(no_empty[med_index] + S.top())) / 2.0;
+            return ret;
+          }
+          else {
+            ret = ((double)(no_empty[med_index] + no_empty[med_index-1])) / 2.0;
+            return ret;
+          }
         }
       }
     }
@@ -71,7 +81,7 @@ public:
 
 int main(void)
 {
-  vector<int> num1{1}, num2{2, 3, 4};
+  vector<int> num1{2}, num2{1, 3, 4, 5};
   double ret = Solution::findMedianSortedArrays(num1, num2);
   std::cout << ret << std::endl;
   return 0;
